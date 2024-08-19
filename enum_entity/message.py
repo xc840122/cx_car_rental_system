@@ -20,3 +20,5 @@ class Message(Enum):
     INVALID_ID = "Invalid id. Please try again."
     CAR_NOT_FOUND = "car doesn't exist. Please try again."
     INPUT_VALID_INTEGER = "Please enter a valid integer."
+    DELETE_CAR_SUCCESSFUL = "The car has been deleted"
+    DELETE_CAR_FAILED = "The car has been deleted"

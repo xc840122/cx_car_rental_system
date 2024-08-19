@@ -10,10 +10,11 @@ from dto.login_dto import LoginDto
 from entity.admin import Admin
 from dto.admin_dto import AdminDto
 from entity.car import Car
+from enum_entity.message import Message
 from exception.duplicated_exception import DuplicatedException
 from utils.check_if_duplicated import check_if_duplicated
 from utils.generate_id import generate_user_id
-from dao.admin_dao import add_admin, admin_login, add_car, get_cars, update_car, get_car_by_id
+from dao.admin_dao import add_admin, admin_login, add_car, get_cars, update_car, get_car_by_id, delete_car_by_id
 from dto.car_dto import CarDto
 
 
@@ -109,3 +110,24 @@ def modify_car_service(car: Car):
         car.max_rent_period = current_car.max_rent_period
     # call data layer to update car in database
     return update_car(car)
+
+
+def delete_car_service(car_id: int) -> bool:
+    """
+    :description: Handles the logic for deleting a car.
+    :param car_id: ID of the car to be deleted.
+    :return: True if the car was successfully deleted, False otherwise.
+    """
+    # Perform any business logic checks or preprocessing if needed
+    # For example, you could check if the car ID is valid before calling the DAO
+
+    result = delete_car_by_id(car_id)
+
+    if result:
+        print(Message.DELETE_CAR_SUCCESSFUL.value)
+        return True
+    else:
+        print(Message.DELETE_CAR_FAILED.value)
+        return False
+
+

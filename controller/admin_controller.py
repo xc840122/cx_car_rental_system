@@ -16,7 +16,7 @@ from enum_entity.car_model import CarModelEnum
 from enum_entity.message import Message
 from entity.login_cache import LoginCache
 from service.admin_service import admin_sign_up_service, admin_login_service, add_car_service, get_car_list_service, \
-    modify_car_service
+    modify_car_service, delete_car_service
 
 admin_login_cache = None
 
@@ -165,7 +165,36 @@ def modify_car_controller():
 
 
 def delete_car_controller():
-    pass
+    """
+    :description: interface with admin, delete car by id from CUI
+    :return:
+    """
+    # get car_list
+    car_list = get_car_list_service()
+    # fetch id from car_list, generate id list of car
+    car_id_list = []
+    for car in car_list:
+        car_id_list.append(car.car_id)
+
+    # Prompt admin to select a car by id
+    while True:
+        try:
+            input_car_id = int(input("Enter the id of the car you want to delete: "))
+            if input_car_id < 0:
+                print(Message.INVALID_ID.value)
+            elif car_id_list.count(input_car_id) < 1:
+                print(Message.CAR_NOT_FOUND.value)
+            else:
+                # Call the service layer to delete the car
+                result = delete_car_service(input_car_id)
+                if result:
+                    print(Message.DELETE_CAR_SUCCESSFUL.value)
+                else:
+                    print(Message.DELETE_CAR_FAILED.value)
+                break
+        except ValueError:
+            print(Message.INPUT_VALID_INTEGER)
+
 
 
 def get_order_list_controller():

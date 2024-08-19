@@ -168,3 +168,23 @@ def update_car(car: Car) -> bool:
         return False
     finally:
         commit_and_close_connection(connection)
+
+
+def delete_car_by_id(car_id: int) -> bool:
+    """
+    :description: Deletes a car from the database by its ID.
+    :param car_id: ID of the car to be deleted.
+    :return: True if the car was successfully deleted, False otherwise.
+    """
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    try:
+        sql = 'DELETE FROM cars WHERE car_id = %s'
+        cursor.execute(sql, (car_id,))
+        commit_and_close_connection(connection)
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        commit_and_close_connection(connection)
+        return False
