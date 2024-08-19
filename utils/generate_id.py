@@ -1,8 +1,8 @@
 """
     @author: Peter
     @date: 16/08/2024
-    @file: generate_user_id.py
-    @description: tool to generate random user id
+    @file: generate_id.py
+    @description: tool to generate random id for data storage
 """
 import uuid
 

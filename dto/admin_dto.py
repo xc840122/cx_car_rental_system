@@ -2,7 +2,7 @@
     @author: Peter
     @date: 16/08/2024
     @file: admin_dto.py
-    @description: AdminDto entity for data transmission between controller and service
+    @description: AdminDto object for transmission of admin sign up
 """
 
 

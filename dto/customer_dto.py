@@ -2,7 +2,7 @@
     @author: Peter
     @date: 16/08/2024
     @file: customer_dto.py
-    @description: CustomerDto entity for data transmission between controller and service
+    @description: CustomerDto object for transmission of customer sign up
 """
 
 

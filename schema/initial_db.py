@@ -9,16 +9,6 @@
 from utils.connect_db import get_connection
 
 
-# def get_connection():
-#     try:
-#         connection = mysql.connector.connect(**DATABASE_CONFIG)
-#         if connection.is_connected():
-#             print('Connecting to MySQL...')
-#             return connection
-#     except mysql.connector.Error as err:
-#         print(err)
-
-
 def setup_database():
     conn = get_connection()
     cursor = conn.cursor()
@@ -27,10 +17,9 @@ def setup_database():
                         user_id VARCHAR(50) PRIMARY KEY,
                         user_name VARCHAR(20) NOT NULL UNIQUE ,
                         password VARCHAR(20) NOT NULL,
-                        name VARCHAR(100) NOT NULL,
-                        phone VARCHAR(20) NOT NULL UNIQUE ,
-                        email VARCHAR(100) NOT NULL UNIQUE,
-                        branch_code INT(5) NOT NULL
+                        branch_code INT(5) NOT NULL,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                     )''')
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS customers (
@@ -39,7 +28,23 @@ def setup_database():
                             password VARCHAR(20) NOT NULL,
                             name VARCHAR(100) NOT NULL,
                             license_no VARCHAR(100) NOT NULL UNIQUE,
-                            phone VARCHAR(20) NOT NULL UNIQUE
+                            phone VARCHAR(20) NOT NULL UNIQUE,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                        )''')
+
+    cursor.execute('''CREATE TABLE IF NOT EXISTS cars (
+                            car_id INT AUTO_INCREMENT PRIMARY KEY,
+                            make VARCHAR(50) NOT NULL,
+                            model VARCHAR(50) NOT NULL,
+                            year INT NOT NULL,
+                            mileage INT NOT NULL,
+                            available TINYINT NOT NULL DEFAULT 1,
+                            unit_price FLOAT NOT NULL,
+                            min_rent_period INT NOT NULL,
+                            max_rent_period INT NOT NULL,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                         )''')
     conn.commit()
     conn.close()

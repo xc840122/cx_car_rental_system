@@ -1,3 +1,9 @@
+"""
+    @author: Peter
+    @date: 16/08/2024
+    @file: customer.py
+    @description: customer entity which is inherited from user
+"""
 from entity.user import User
 
 

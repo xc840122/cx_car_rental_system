@@ -5,11 +5,13 @@
     @description: operations of customer
 """
 from dto.customer_dto import CustomerDto
+from dto.login_dto import LoginDto
 from entity.customer import Customer
+from enum_entity.message import Message
 from exception.duplicated_exception import DuplicatedException
-from utils.generate_user_id import generate_user_id
+from utils.generate_id import generate_user_id
 from utils.check_if_duplicated import check_if_duplicated
-from dao.customer_dao import add_customer
+from dao.customer_dao import add_customer, customer_login
 
 
 def customer_sign_up_service(customer_dto: CustomerDto):
@@ -33,11 +35,21 @@ def customer_sign_up_service(customer_dto: CustomerDto):
     check_license_no = check_if_duplicated('customers', 'license_no', customer.license_no)
     check_phone = check_if_duplicated('customers', 'phone', customer.phone)
     if check_username:
-        raise DuplicatedException("user_name already exists")
+        raise DuplicatedException(Message.USERNAME_ALREADY_EXISTS)
     elif check_license_no:
-        raise DuplicatedException("license_no already exists")
+        raise DuplicatedException(Message.LICENSE_NO_ALREADY_EXISTS)
     elif check_phone:
-        raise DuplicatedException("phone already exists")
+        raise DuplicatedException(Message.PHONE_ALREADY_EXISTS)
     else:
         # use data layer to insert customer info into database
         add_customer(customer)
+
+
+def customer_login_service(login_dto: LoginDto):
+    """
+    :param login_dto: include login information
+    :return: result of login verification
+    """
+    user_name = login_dto.user_name
+    password = login_dto.password
+    return customer_login(user_name, password)
