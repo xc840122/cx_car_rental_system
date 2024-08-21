@@ -1,7 +1,7 @@
 """
     @author: Peter
     @date: 16/08/2024
-    @file: admin.py
+    @file: admin_dao.py
     @description: Admin entity which is inherited from user
 """
 from entity.user import User

@@ -39,12 +39,27 @@ def setup_database():
                             model VARCHAR(50) NOT NULL,
                             year INT NOT NULL,
                             mileage INT NOT NULL,
-                            available TINYINT NOT NULL DEFAULT 1,
+                            available TINYINT NOT NULL DEFAULT 1, # 0:not available, 1: normal, 2: rented
                             unit_price FLOAT NOT NULL,
                             min_rent_period INT NOT NULL,
                             max_rent_period INT NOT NULL,
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                        )''')
+
+    cursor.execute('''CREATE TABLE IF NOT EXISTS car_rental_orders (
+                            order_id VARCHAR(50) PRIMARY KEY,
+                            customer_id VARCHAR(50) NOT NULL,
+                            car_id INT NOT NULL,
+                            rent_start_date DATE NOT NULL,
+                            rent_end_date DATE NOT NULL,
+                            total_cost DECIMAL(10, 2) NOT NULL,
+                            status ENUM('PENDING', 'APPROVED', 'REJECTED', 'COMPLETED') DEFAULT 'PENDING',
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                            INDEX idx_customer_id (customer_id),
+                            INDEX idx_car_id (car_id),
+                            INDEX idx_rent_dates (rent_start_date, rent_end_date)
                         )''')
     conn.commit()
     conn.close()

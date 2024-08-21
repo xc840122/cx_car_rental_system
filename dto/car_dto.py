@@ -7,7 +7,7 @@
 
 
 class CarDto:
-    def __init__(self,make, model, year, mileage, unit_price, min_rent_period, max_rent_period):
+    def __init__(self, make, model, year, mileage, unit_price, min_rent_period, max_rent_period):
         self.make: str = make
         self.model: str = model
         self.year: int = year

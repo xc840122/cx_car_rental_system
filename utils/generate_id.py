@@ -12,3 +12,10 @@ def generate_user_id():
     :return: random user id
     """
     return str(uuid.uuid4())
+
+
+def generate_order_id():
+    """
+    :return: random user id
+    """
+    return str(f'order-{uuid.uuid4()}')

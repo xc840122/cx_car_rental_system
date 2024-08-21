@@ -2,7 +2,7 @@
     @author: Peter
     @date: 16/08/2024
     @file: admin_dto.py
-    @description: AdminDto object for transmission of admin sign up
+    @description: AdminDto object for transmission of admin_dao sign up
 """
 
 

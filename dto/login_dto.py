@@ -6,7 +6,7 @@
 """
 
 
-class LoginDto():
+class LoginDto:
     def __init__(self, user_name, password):
         self.__user_name = user_name
         self.__password = password

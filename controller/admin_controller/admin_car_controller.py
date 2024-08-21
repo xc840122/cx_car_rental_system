@@ -1,64 +1,23 @@
 """
     @author: Peter
-    @date: 16/08/2024
-    @file: admin_controller.py
-    @description: interface with user, get input from CUI
+    @date: 18/08/2024
+    @file: admin__car_controller.py
+    @description: car controller for admin
 """
 from prettytable import PrettyTable
 
 from constant.car_columns import CAR_COLUMNS
-from dto.admin_dto import AdminDto
 from dto.car_dto import CarDto
-from dto.login_dto import LoginDto
 from entity.car import Car
 from enum_entity.car_make import CarMakeEnum
 from enum_entity.car_model import CarModelEnum
 from enum_entity.message import Message
-from entity.login_cache import LoginCache
-from service.admin_service import admin_sign_up_service, admin_login_service, add_car_service, get_car_list_service, \
-    modify_car_service, delete_car_service
-
-admin_login_cache = None
-
-
-def admin_sign_up_controller():
-    """
-    :description: interface with admins, get input from CUI
-    :return:
-    """
-    user_name = input('Please enter your user name: ')
-    password = input('Please enter your password: ')
-    branch_code = input('Please enter your branch code: ')
-    # pass values to service layer with AdminDto entity
-    admin_dto = AdminDto(user_name, password, branch_code)
-    admin_sign_up_service(admin_dto)
-    return 'success'
-
-
-def admin_login_controller():
-    """
-    :description: interface with admin, login from CUI
-    :return: result of login
-    """
-    # ask customer to input user_name and password
-    user_name = input('Please enter your username: ')
-    password = input('Please enter your password: ')
-    # create login_dto object
-    login_dto = LoginDto(user_name, password)
-    login_result = admin_login_service(login_dto)
-    if login_result:
-        # cache login information
-        admin_login_cache = LoginCache(login_dto)
-        print(Message.ADMIN_LOGIN_SUCCESSFUL.value)
-        return True
-    else:
-        print(Message.ADMIN_LOGIN_FAILED.value)
-        return False
+from service.admin.admin_car_service import add_car_service, get_car_list_service, modify_car_service, delete_car_service
 
 
 def add_car_controller():
     """
-    :description: interface with admin, add cars to CUI
+    :description: interface with admin_dao, add cars to CUI
     :return:
     """
     # input basic information of a car
@@ -75,7 +34,7 @@ def add_car_controller():
                      car_min_rent_period, car_max_rent_period)
     # call service layer to add car
     result = add_car_service(car_dto)
-    # feedback to admin on CUI
+    # feedback to admin_dao on CUI
     if result:
         print(Message.ADD_CAR_SUCCESSFUL.value)
         return True
@@ -86,7 +45,7 @@ def add_car_controller():
 
 def get_car_list_controller():
     """
-    :description: interface with admin, get all cars list from CUI
+    :description: interface with admin_dao, get all cars list from CUI
     :return:
     """
     # Initialize PrettyTable with column names
@@ -125,7 +84,7 @@ def get_car_list_controller():
 
 def modify_car_controller():
     """
-    :description: interface with admin, modify cars from CUI
+    :description: interface with admin_dao, modify cars from CUI
     :return:
     """
     # get car_dto_list
@@ -134,7 +93,7 @@ def modify_car_controller():
     car_id_list = []
     for car in car_list:
         car_id_list.append(car.car_id)
-    # Prompt admin to select a car by id
+    # Prompt admin_dao to select a car by id
     while True:
         try:
             input_car_id = int(input("Enter the id of the car you want to modify: "))
@@ -166,7 +125,7 @@ def modify_car_controller():
 
 def delete_car_controller():
     """
-    :description: interface with admin, delete car by id from CUI
+    :description: interface with admin_dao, delete car by id from CUI
     :return:
     """
     # get car_list
@@ -176,7 +135,7 @@ def delete_car_controller():
     for car in car_list:
         car_id_list.append(car.car_id)
 
-    # Prompt admin to select a car by id
+    # Prompt admin_dao to select a car by id
     while True:
         try:
             input_car_id = int(input("Enter the id of the car you want to delete: "))
@@ -196,15 +155,6 @@ def delete_car_controller():
             print(Message.INPUT_VALID_INTEGER)
 
 
-
-def get_order_list_controller():
-    pass
-
-
-def order_approve_controller():
-    pass
-
-
 def car_make_select():
     """
     :description: CUI interface to select car make
@@ -216,7 +166,7 @@ def car_make_select():
         print(item.value)
 
     while True:
-        # Ask admin to choose one
+        # Ask admin_dao to choose one
         car_make = input('Please choose a car make to input: ').strip().lower()
         # Verify the input by comparing lowercase versions
         if car_make not in [item.value for item in CarMakeEnum]:
@@ -237,7 +187,7 @@ def car_model_select():
         print(item.value)
 
     while True:
-        # Ask admin to choose one
+        # Ask admin_dao to choose one
         car_model = input('Please choose a car model to input: ').strip().lower()
         # Verify the input
         if car_model not in [item.value for item in CarModelEnum]:
