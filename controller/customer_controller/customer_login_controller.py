@@ -28,13 +28,13 @@ def customer_login_controller():
     # create login_dto object
     login_dto = LoginDto(user_name, password)
     # call service to verify login info and get user_id response
-    login_user_id = customer_login_service(login_dto)
-    # get user id
-    if login_user_id:
+    login_customer = customer_login_service(login_dto)
+    # return values
+    if login_customer:
         # cache login information
-        login_cache = LoginCache(login_user_id)
+        login_cache = LoginCache(login_customer)
         print(Message.CUSTOMER_LOGIN_SUCCESSFUL.value)
-        return True
+        return login_customer
     else:
         print(Message.CUSTOMER_LOGIN_FAILED.value)
         return False
@@ -45,4 +45,4 @@ def current_login_customer() -> str:
     :description: cache and provide current login user info
     :return:
     """
-    return login_cache.login_user
+    return login_cache.login_user.user_id

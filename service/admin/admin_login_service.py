@@ -6,6 +6,7 @@
 """
 from dao.admin_dao.admin_login_dao import admin_login
 from dto.login_dto import LoginDto
+from entity.admin import Admin
 
 
 def admin_login_service(login_dto: LoginDto):
@@ -13,6 +14,15 @@ def admin_login_service(login_dto: LoginDto):
     :param login_dto: include login information
     :return: result of login verification
     """
-    user_name = login_dto.user_name
-    password = login_dto.password
-    return admin_login(user_name, password)
+    user_name = login_dto.user_name.strip()
+    password = login_dto.password.strip()
+
+    # If verification passes, attempt login
+    row = admin_login(user_name, password)
+
+    # get user id from response tuple
+    if row:
+        admin = Admin(*row)
+        return admin
+    else:
+        return False

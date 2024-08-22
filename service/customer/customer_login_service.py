@@ -6,6 +6,7 @@
 """
 from dao.customer_dao.customer_login_dao import customer_login
 from dto.login_dto import LoginDto
+from entity.customer import Customer
 from enum_entity.message import Message
 
 
@@ -37,7 +38,7 @@ def customer_login_service(login_dto: LoginDto):
 
     # get user id from response tuple
     if row:
-        user_id = row[0]
-        return user_id
+        customer = Customer(*row)
+        return customer
     else:
         return False

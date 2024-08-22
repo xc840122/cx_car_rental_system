@@ -5,7 +5,7 @@
     @description: cx car rental system, a CUI app to support user registration,
     user login, car management and order management
 """
-from controller.menu_controller import main_menu
+from menu.main_menu import main_menu
 
 
 def main():

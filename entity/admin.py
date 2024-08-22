@@ -4,7 +4,7 @@
     @file: admin_dao.py
     @description: Admin entity which is inherited from user
 """
-from entity.user import User
+from abstract_entity.user import User
 
 
 class Admin(User):

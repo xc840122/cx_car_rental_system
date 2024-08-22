@@ -4,7 +4,7 @@
     @file: customer.py
     @description: customer entity which is inherited from user
 """
-from entity.user import User
+from abstract_entity.user import User
 
 
 class Customer(User):

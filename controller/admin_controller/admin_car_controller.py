@@ -103,6 +103,7 @@ def modify_car_controller():
                 print(Message.CAR_NOT_FOUND.value)
             else:
                 selected_car_id = input_car_id
+                print(Message.NO_CHANGE_WITH_NULL.value)
                 new_make = input("Please enter the new car make: ")
                 new_model = input("Please enter the new car model: ")
                 new_year = input("Please enter the new car year: ")
@@ -112,8 +113,8 @@ def modify_car_controller():
                 new_min_rent_period = input("Please enter the new car min_rent period: ")
                 new_max_rent_period = input("Please enter the new car max_rent period: ")
                 # generate car object for updating
-                new_car = Car(selected_car_id, new_make, new_model, new_year, new_mileage,
-                              new_unit_price, new_min_rent_period, new_max_rent_period, new_available)
+                new_car = Car(selected_car_id, new_make, new_model, new_year, new_mileage,new_available,
+                              new_unit_price, new_min_rent_period, new_max_rent_period)
 
                 # call service logic
                 modify_car_service(new_car)

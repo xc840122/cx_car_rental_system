@@ -26,3 +26,4 @@ class CarModelEnum(Enum):
     OPTIMA: str = 'optima'
     MAZDA_3: str = 'mazda-3'
     IMPREZA: str = 'impreza'
+    NOTE: str = 'note'

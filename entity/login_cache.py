@@ -4,16 +4,17 @@
     @file: login_cache.py
     @description: cache present login user (admin_dao/customer) for other function using
 """
+from abstract_entity.user import User
 
 
 class LoginCache:
-    def __init__(self, user_id: str):
-        self.__user_id = user_id
+    def __init__(self, user: User):
+        self.__user = user
 
     @property
     def login_user(self):
-        return self.__user_id
+        return self.__user
 
     @login_user.setter
     def login_user(self, value):
-        self.__user_id = value
+        self.__user = value

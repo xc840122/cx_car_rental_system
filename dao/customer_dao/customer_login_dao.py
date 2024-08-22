@@ -19,7 +19,7 @@ def customer_login(user_name: str, password: str):
     connection = get_connection()
     try:
         cursor = connection.cursor()
-        sql = 'SELECT user_id FROM customers WHERE user_name = %s AND password = %s'
+        sql = 'SELECT user_id,user_name,password,name,license_no,phone FROM customers WHERE user_name = %s AND password = %s'
         cursor.execute(sql, (user_name, password))
         row = cursor.fetchone()
         return row

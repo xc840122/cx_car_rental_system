@@ -8,6 +8,7 @@ from enum import Enum
 
 
 class Message(Enum):
+    NO_CHANGE_WITH_NULL = "\n### Update values as long as new value input ###\n"
     REGISTRATION_FAILED = "Sign up failed"
     REGISTRATION_SUCCESSFUL = "Sign up successful"
     PASSWORD_MISMATCH = "The two password are not same, sign up failed"
