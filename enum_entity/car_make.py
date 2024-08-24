@@ -2,7 +2,7 @@
     @author: Peter
     @date: 18/08/2024
     @file: car_make.py
-    @description: collection of car make
+    @description: enum of car make
 """
 from enum import Enum
 

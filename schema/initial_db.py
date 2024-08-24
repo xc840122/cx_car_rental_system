@@ -4,12 +4,20 @@
     @file: initial_db.py
     @description: database schema, create table to initial database
 """
-# import mysql.connector
-# from constant.db_config import DATABASE_CONFIG
-from utils.connect_db import get_connection
+from constant.db_config import CREATE_DATABASE_CONFIG, SETUP_DATABASE_CONFIG
+from utils.connect_db import get_connection, create_database_connection
+from utils.release_db import commit_and_close_connection
 
 
 def setup_database():
+    # create database
+    create_conn = create_database_connection()
+    create_cursor = create_conn.cursor()
+
+    create_cursor.execute('''CREATE DATABASE IF NOT EXISTS cx_cars''')
+    commit_and_close_connection(create_conn)
+
+    # connect database, initial database
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -51,6 +59,7 @@ def setup_database():
                             order_id VARCHAR(50) PRIMARY KEY,
                             customer_id VARCHAR(50) NOT NULL,
                             car_id INT NOT NULL,
+                            coupon_id VARCHAR(50),
                             rent_start_date DATE NOT NULL,
                             rent_end_date DATE NOT NULL,
                             total_cost DECIMAL(10, 2) NOT NULL,
@@ -59,7 +68,19 @@ def setup_database():
                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                             INDEX idx_customer_id (customer_id),
                             INDEX idx_car_id (car_id),
+                            INDEX idx_coupon_id (coupon_id),
                             INDEX idx_rent_dates (rent_start_date, rent_end_date)
                         )''')
-    conn.commit()
-    conn.close()
+
+    cursor.execute('''CREATE TABLE IF NOT EXISTS coupons (
+                            coupon_id VARCHAR(50) PRIMARY KEY,
+                            denomination DECIMAL(10, 2) NOT NULL,
+                            description VARCHAR(100) NOT NULL,
+                            status ENUM('PENDING', 'ACTIVATED', 'USED', 'EXPIRED') DEFAULT 'PENDING',
+                            start_date DATE NOT NULL,
+                            expired_date DATE NOT NULL,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                        )''')
+
+    commit_and_close_connection(conn)

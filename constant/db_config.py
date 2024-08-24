@@ -5,9 +5,16 @@
     @description: database configuration
 """
 
-DATABASE_CONFIG = {
+CREATE_DATABASE_CONFIG = {
     'user': 'root',
     'password': '',
     'host': 'localhost',
-    'database': 'cx_crs'
+    # 'database': 'cx_cars'
+}
+
+SETUP_DATABASE_CONFIG = {
+    'user': 'root',
+    'password': '',
+    'host': 'localhost',
+    'database': 'cx_cars'
 }

@@ -12,33 +12,37 @@ from utils.connect_db import get_connection
 from utils.release_db import commit_and_close_connection
 
 
-def customer_car_date_available(car_id: int, start_date: date, end_date: date) -> bool:
+def customer_car_date_available(car_id: int, start_date: date, end_date: date) -> int:
     """
     :description: Check the database for any conflicting bookings within the specified date range
     :param car_id: ID of the car to check
     :param start_date: Rental start date (YYYY-MM-DD)
     :param end_date: Rental end date (YYYY-MM-DD)
-    :return: True if the car is available, False otherwise
+    :return: numbers of search
     """
     connection = get_connection()
+    cursor = connection.cursor()
 
     try:
-        cursor = connection.cursor()
         # Query to check for overlapping bookings
         sql = """
-        SELECT COUNT(*) FROM car_rental_orders 
-        WHERE car_id = %s 
-        AND (rent_start_date <= %s AND rent_end_date >= %s);
+        SELECT COUNT(*)
+        FROM car_rental_orders
+        WHERE car_id = %s
+        AND status IN ('APPROVED', 'PENDING') -- Only check for active or upcoming rentals
+        AND (
+            (rent_start_date <= %s AND rent_end_date >= %s) -- New start date falls within an existing rental
+        OR (rent_start_date <= %s AND rent_end_date >= %s) -- New end date falls within an existing rental
+        OR (rent_start_date >= %s AND rent_end_date <= %s) -- Existing rental falls completely within the new rental period
+        )
         """
-        cursor.execute(sql, (car_id, end_date, start_date))
+        cursor.execute(sql, (car_id,start_date,start_date,end_date, end_date, start_date,end_date))
         row = cursor.fetchone()
-
         # If count is 0, the car is available
-        return row[0] == 0
+        return row[0]
 
     except Exception as e:
         print(f"Error: {e}")
-        return False
 
     finally:
         commit_and_close_connection(connection)
@@ -57,11 +61,12 @@ def customer_order_car(order: Order):
                'order_id, '
                'customer_id, '
                'car_id, '
+               'coupon_id,'
                'rent_start_date, '
                'rent_end_date,'
                'total_cost) '
-               'VALUES (%s, %s, %s, %s, %s, %s)')
-        values = (order.order_id, order.customer_id, order.car_id, order.rent_start_date,
+               'VALUES (%s, %s, %s, %s, %s, %s,%s)')
+        values = (order.order_id, order.customer_id, order.car_id, order.coupon_id, order.rent_start_date,
                   order.rent_end_date, order.total_cost)
         cursor.execute(sql, values)
         return True
@@ -81,7 +86,16 @@ def get_customer_orders(customer_id: str) -> list[Order]:
     cursor = connection.cursor()
     try:
         sql = '''
-        SELECT order_id, customer_id, car_id, rent_start_date, rent_end_date, total_cost, status, created_at
+        SELECT 
+        order_id, 
+        customer_id, 
+        car_id, 
+        coupon_id,
+        rent_start_date, 
+        rent_end_date, 
+        total_cost, 
+        status, 
+        created_at
         FROM car_rental_orders
         WHERE customer_id = %s
         '''
@@ -102,4 +116,3 @@ def get_customer_orders(customer_id: str) -> list[Order]:
         return []
     finally:
         commit_and_close_connection(connection)
-

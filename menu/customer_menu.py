@@ -25,6 +25,7 @@ class CustomerMenu(Menu):
             if choice == "1":
                 customer_get_car_list_controller()
             elif choice == "2":
+                customer_get_car_list_controller()
                 customer_order_car_controller()
             elif choice == "3":
                 get_customer_orders_controller()

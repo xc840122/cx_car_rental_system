@@ -5,8 +5,12 @@
     @description: order controller for admin
 """
 from prettytable import PrettyTable
+
+from dto import coupon_dto
+from enum_entity.coupon_status import CouponStatus
 from enum_entity.message import Message
-from service.admin.admin_order_service import get_order_list_service, approve_order_service
+from service.admin.admin_coupon_service import reset_coupons_status
+from service.admin.admin_order_service import get_order_list_service, approve_order_service, admin_get_order_by_id
 
 
 def get_order_list_controller():
@@ -43,7 +47,7 @@ def get_order_list_controller():
             order.rent_start_date,
             order.rent_end_date,
             order.total_cost,
-            order.status,
+            order.order_status,  # capsuled
             order.created_at,
         ])
 
@@ -65,6 +69,7 @@ def order_approve_controller():
             order_id_list = [order.order_id for order in order_list]
             if input_order_id not in order_id_list:
                 print(Message.ORDER_NOT_FOUND.value)
+                break
             else:
                 # Ask for approval or rejection
                 action = input("Enter 'approve' to approve the order or 'reject' to reject it: ").strip().lower()
@@ -85,3 +90,4 @@ def order_approve_controller():
                 break
         except Exception as e:
             print(f'Error: {e}')
+

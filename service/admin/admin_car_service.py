@@ -7,8 +7,10 @@
 from typing import List
 
 from dao.admin_dao.admin_car_dao import add_car, get_cars, get_car_by_id, update_car, delete_car_by_id
+from dao.admin_dao.admin_order_dao import get_order_by_car
 from dto.car_dto import CarDto
 from entity.car import Car
+from enum_entity.message import Message
 
 
 def add_car_service(car_dto: CarDto):
@@ -79,11 +81,23 @@ def delete_car_service(car_id: int) -> bool:
     :param car_id: ID of the car to be deleted.
     :return: True if the car was successfully deleted, False otherwise.
     """
-    # Perform any business logic checks or preprocessing if needed
-    # For example, you could check if the car ID is valid before calling the DAO
+    # verify is there is order related to the car_id
+    result = verify_if_car_rented(car_id)
+    if result:
+        print(Message.CAR_IS_RENTED.value)
+        return True
+    else:
+        delete_car_by_id(car_id)
+        return False
 
-    result = delete_car_by_id(car_id)
 
+def verify_if_car_rented(car_id: int) -> bool:
+    """
+        :description: Verifies if the car was rented in the car.
+        :param car_id:
+        :return:
+    """
+    result = get_order_by_car(car_id)
     if result:
         return True
     else:

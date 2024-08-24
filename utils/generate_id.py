@@ -19,3 +19,10 @@ def generate_order_id():
     :return: random user id
     """
     return str(f'order-{uuid.uuid4()}')
+
+
+def generate_coupon_id():
+    """
+    :return: random user id
+    """
+    return str(f'coupon-{uuid.uuid4()}')

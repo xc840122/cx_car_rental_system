@@ -19,13 +19,13 @@ def customer_get_car_by_id(car_id: int) -> Union[Car, bool]:
         :return: A Car object if the car is found, None otherwise.
         """
     connection = get_connection()
-    # SQL query to select the car by ID
-    sql = ('SELECT car_id, make, model, year, mileage, available, '
-           'unit_price, min_rent_period, max_rent_period '
-           'FROM cars WHERE car_id = %s and available = %s')
+    cursor = connection.cursor()
     try:
-        cursor = connection.cursor()
-        cursor.execute(sql, (car_id,1))
+        # SQL query to select the car by ID
+        sql = ('SELECT car_id, make, model, year, mileage, available, '
+               'unit_price, min_rent_period, max_rent_period '
+               'FROM cars WHERE car_id = %s and available = %s')
+        cursor.execute(sql, (car_id, 1))
         # Fetch the car data
         row = cursor.fetchone()
         # Create and return a Car object using the retrieved data

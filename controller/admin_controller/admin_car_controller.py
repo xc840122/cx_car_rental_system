@@ -12,7 +12,8 @@ from entity.car import Car
 from enum_entity.car_make import CarMakeEnum
 from enum_entity.car_model import CarModelEnum
 from enum_entity.message import Message
-from service.admin.admin_car_service import add_car_service, get_car_list_service, modify_car_service, delete_car_service
+from service.admin.admin_car_service import add_car_service, get_car_list_service, modify_car_service, \
+    delete_car_service, verify_if_car_rented
 
 
 def add_car_controller():
@@ -148,9 +149,9 @@ def delete_car_controller():
                 # Call the service layer to delete the car
                 result = delete_car_service(input_car_id)
                 if result:
-                    print(Message.DELETE_CAR_SUCCESSFUL.value)
-                else:
                     print(Message.DELETE_CAR_FAILED.value)
+                else:
+                    print(Message.DELETE_CAR_SUCCESSFUL.value)
                 break
         except ValueError:
             print(Message.INPUT_VALID_INTEGER)
