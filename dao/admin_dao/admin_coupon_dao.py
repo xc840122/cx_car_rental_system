@@ -17,15 +17,14 @@ def add_coupons_dao(coupon_list: List):
     connection = get_connection()
     cursor = connection.cursor()
     try:
-        sql = ('INSERT INTO coupons ('
-               'coupon_id, '
-               'denomination, '
-               'description, '
-               'status, '
-               'start_date, '
-               'expired_date, '
-               'created_at) '
-               'VALUES (%s, %s, %s, %s, %s, %s, %s)')
+        sql = '''INSERT INTO coupons (
+        coupon_id, 
+        denomination, 
+        description, 
+        status, start_date, 
+        expired_date, 
+        created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'''
+
         values = coupon_list
         cursor.executemany(sql, values)
         return True
@@ -54,7 +53,7 @@ def get_coupons_dao(coupon_status: str) -> Union[list, bool]:
         start_date, 
         expired_date, 
         created_at 
-        from coupons WHERE status = %s'''
+        from coupons WHERE status = ?'''
 
         values = (coupon_status,)
         cursor.execute(sql, values)
@@ -79,8 +78,8 @@ def update_coupons_status_dao(coupon_id, status):
     cursor = connection.cursor()
     try:
         sql = '''
-        UPDATE coupons SET status = %s
-        WHERE coupon_id LIKE %s'''
+        UPDATE coupons SET status = ?
+        WHERE coupon_id LIKE ?'''
 
         values = (status, coupon_id)
         cursor.execute(sql, values)

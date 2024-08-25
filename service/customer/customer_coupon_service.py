@@ -4,12 +4,13 @@
     @file: customer_coupon_service.py
     @description: customer service logic of coupon
 """
-
+from datetime import datetime
 from typing import Union
 from dao.customer_dao.customer_coupon_dao import verify_coupon_dao, update_coupon_status_dao
 from entity.coupon import Coupon
 from enum_entity.coupon_status import CouponStatus
 from enum_entity.message import Message
+from utils.convert_date_format import convert_date_format
 
 
 def verify_coupon_service(coupon_id: str) -> Union[Coupon, bool]:
@@ -22,7 +23,14 @@ def verify_coupon_service(coupon_id: str) -> Union[Coupon, bool]:
     # Retrieve coupon details from the DAO layer
     coupon = verify_coupon_dao(coupon_id)
 
+    # exchange date format
     if coupon:
+        start_date_obj = convert_date_format(coupon.start_date)
+        expired_date_obj = convert_date_format(coupon.expired_date)
+
+        coupon.start_date = start_date_obj
+        coupon.expired_date = expired_date_obj
+
         return coupon
     else:
         return False
@@ -43,4 +51,3 @@ def update_coupon_status_service(coupon_id: str, new_status: str) -> bool:
 
     # Call the DAO function to update the coupon status in the database
     return update_coupon_status_dao(coupon_id, new_status)
-

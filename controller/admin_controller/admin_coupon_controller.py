@@ -4,8 +4,7 @@
     @file: admin_coupon_controller.py
     @description: coupon related controller, interact with customer via CUI
 """
-from datetime import datetime
-from decimal import Decimal
+from datetime import datetime, date
 
 from prettytable import PrettyTable
 
@@ -23,7 +22,7 @@ def add_coupons_controller():
     try:
         # Prompt for the denomination and validate input
         denomination_input = input("Please input coupon denomination(NZD): ")
-        denomination = Decimal(denomination_input)
+        denomination = float(denomination_input)
         if denomination <= 0:
             print("Denomination must be a positive value.")
             return
@@ -41,10 +40,10 @@ def add_coupons_controller():
 
         # Handle date input and validate format
         input_start_date = input("Please input coupon start date (DD-MM-YYYY): ")
-        start_date = datetime.strptime(input_start_date, "%d-%m-%Y").date()
+        start_date = datetime.strptime(input_start_date, '%d-%m-%Y').date()
 
         input_expired_date = input("Please input coupon expired date (DD-MM-YYYY): ")
-        expired_date = datetime.strptime(input_expired_date, "%d-%m-%Y").date()
+        expired_date = datetime.strptime(input_expired_date, '%d-%m-%Y').date()
 
         # Check if the start date is before the expired date
         if start_date >= expired_date:

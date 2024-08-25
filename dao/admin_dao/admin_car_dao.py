@@ -22,7 +22,7 @@ def add_car(car_dto: CarDto):
         cursor = connection.cursor()
         # insert car data into database
         sql = ('insert into cars (make, model, year, mileage,unit_price ,min_rent_period,max_rent_period) '
-               'values (%s,%s,%s,%s,%s,%s,%s);')
+               'values (?,?,?,?,?,?,?);')
         value = (car_dto.make, car_dto.model, car_dto.year, car_dto.mileage,
                  car_dto.unit_price, car_dto.min_rent_period, car_dto.max_rent_period)
         row = cursor.execute(sql, value)
@@ -70,7 +70,7 @@ def get_car_by_id(car_id: int) -> Union[Car, bool]:
     # SQL query to select the car by ID
     sql = ('SELECT car_id, make, model, year, mileage, available, '
            'unit_price, min_rent_period, max_rent_period '
-           'FROM cars WHERE car_id = %s')
+           'FROM cars WHERE car_id = ?')
     try:
         cursor = connection.cursor()
         cursor.execute(sql, (car_id,))
@@ -98,10 +98,10 @@ def update_car(car: Car) -> bool:
 
     # SQL query to update the car's information
     sql = (
-        'UPDATE cars SET make = %s, model = %s, year = %s, '
-        'mileage = %s, available = %s,unit_price=%s, '
-        'min_rent_period= %s, max_rent_period = %s, '
-        'updated_at = CURRENT_TIMESTAMP WHERE car_id = %s'
+        'UPDATE cars SET make = ?, model = ?, year = ?, '
+        'mileage = ?, available = ?,unit_price=?, '
+        'min_rent_period= ?, max_rent_period = ?, '
+        'updated_at = CURRENT_TIMESTAMP WHERE car_id = ?'
     )
     values = (
         car.make,
@@ -135,7 +135,7 @@ def delete_car_by_id(car_id: int) -> bool:
     connection = get_connection()
     try:
         cursor = connection.cursor()
-        sql = 'DELETE FROM cars WHERE car_id = %s'
+        sql = 'DELETE FROM cars WHERE car_id = ?'
         cursor.execute(sql, (car_id,))
         return True
     except Exception as e:

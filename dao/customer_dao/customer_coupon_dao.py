@@ -32,7 +32,7 @@ def verify_coupon_dao(coupon_id: str) -> Union[Coupon, bool]:
         start_date, 
         expired_date,
         created_at 
-        FROM coupons WHERE coupon_id = %s"""
+        FROM coupons WHERE coupon_id = ?"""
         cursor.execute(sql, (coupon_id,))
         row = cursor.fetchone()
 
@@ -61,9 +61,8 @@ def update_coupon_status_dao(coupon_id: str, new_status: str) -> bool:
 
     try:
         # SQL query to update the coupon status
-        sql = '''UPDATE coupons SET status = %s WHERE coupon_id = %s'''
+        sql = '''UPDATE coupons SET status = ? WHERE coupon_id = ?'''
         cursor.execute(sql, (new_status, coupon_id))
-        print("+++++++++++++++")
         # Check if any row was affected
         if cursor.rowcount > 0:
             return True

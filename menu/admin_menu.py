@@ -38,7 +38,7 @@ class AdminMenu(Menu):
             elif choice == "4":
                 get_car_list_controller()
             elif choice == "5":
-                get_car_list_controller()
+                get_order_list_controller()
             elif choice == "6":
                 get_order_list_controller()
                 order_approve_controller()

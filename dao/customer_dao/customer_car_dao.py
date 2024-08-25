@@ -4,8 +4,6 @@
     @file: customer_car_dao.py
     @description: methods to get car data from database
 """
-from datetime import date, datetime, timedelta, time
-from decimal import Decimal
 from typing import List, Union
 from entity.car import Car
 from utils.connect_db import get_connection
@@ -24,7 +22,7 @@ def customer_get_car_by_id(car_id: int) -> Union[Car, bool]:
         # SQL query to select the car by ID
         sql = ('SELECT car_id, make, model, year, mileage, available, '
                'unit_price, min_rent_period, max_rent_period '
-               'FROM cars WHERE car_id = %s and available = %s')
+               'FROM cars WHERE car_id = ? and available = ?')
         cursor.execute(sql, (car_id, 1))
         # Fetch the car data
         row = cursor.fetchone()
@@ -51,7 +49,7 @@ def customer_get_cars() -> Union[bool, List[Car]]:
 
         # Query to select cars which are available from the cars table
         sql = '''SELECT car_id, make, model, year, mileage,available,unit_price,
-               min_rent_period, max_rent_period FROM cars where available != %s'''
+               min_rent_period, max_rent_period FROM cars where available != ?'''
         values = (0,)
         cursor.execute(sql, values)
 

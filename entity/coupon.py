@@ -5,24 +5,21 @@
     @description: Coupon entity
 """
 from datetime import datetime, date
-from decimal import Decimal
-
-from enum_entity.coupon_status import CouponStatus
 
 
 class Coupon:
     def __init__(self,
-                 coupon_id: str,
-                 denomination: Decimal,
+                 coupon_id,
+                 denomination,
                  description,
-                 status: str,
-                 start_date: date,
-                 expired_date: date,
+                 status,
+                 start_date,
+                 expired_date,
                  created_at: datetime):
-        self.coupon_id = coupon_id
-        self.denomination = denomination
+        self.coupon_id: str = coupon_id
+        self.denomination: float = denomination
         self.description = description
-        self.status = status
+        self.status: str = status
         self.start_date = start_date
         self.expired_date = expired_date
-        self.created_at = created_at or datetime.now()
+        self.created_at: datetime = created_at or datetime.now()

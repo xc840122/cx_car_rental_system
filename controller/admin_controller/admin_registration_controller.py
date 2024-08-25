@@ -14,7 +14,7 @@ def admin_sign_up_controller():
     :description: interface with admins, get input from CUI
     :return:
     """
-    print("===== Customer Registration =====")
+    print("===== Admin Registration =====")
     user_name = input("Please enter your user name: ").strip()
     password = input("Please enter your password: ").strip()
     confirm_password = input("Please confirm your password: ").strip()

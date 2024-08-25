@@ -4,7 +4,6 @@
     @file: customer_order_controller.py
     @description: order related controller of customer
 """
-from decimal import Decimal
 
 from prettytable import PrettyTable
 
@@ -154,8 +153,7 @@ def validate_rental_duration(ordered_car, start_date, end_date):
 
 def handle_coupon_application():
     """Handle the coupon application process and return the coupon and its denomination."""
-    coupon_denomination = Decimal(0)
-    coupon = None
+    coupon_denomination = 0.0
 
     use_coupon = input("Do you want to use a coupon(no cash return "
                        "if denomination is more than order amount? (yes/no): ").strip().lower()
@@ -163,7 +161,12 @@ def handle_coupon_application():
         coupon_id = input("Please enter your coupon id: ").strip()
         # verify coupon
         coupon = verify_coupon_service(coupon_id)
-        if coupon and coupon.status == CouponStatus.ACTIVATED.value and coupon.start_date <= datetime.now().date() <= coupon.expired_date:
+    else:
+        return
+
+    if coupon:
+        if (coupon.status == CouponStatus.ACTIVATED.value and
+                coupon.start_date <= datetime.now().date() <= coupon.expired_date):
             coupon_denomination = coupon.denomination
             print(f"{Message.COUPON_APPLIED.value}, you can save {coupon_denomination} NZD.")
         else:

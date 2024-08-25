@@ -5,21 +5,18 @@
     @description: coupon dto, for transmission need
 """
 from datetime import date
-from decimal import Decimal
-
-from enum_entity.coupon_status import CouponStatus
 
 
 class CouponDto:
     def __init__(self,
-                 denomination: Decimal,
+                 denomination,
                  description,
-                 status: str,
-                 start_date: date,
-                 expired_date: date
+                 status,
+                 start_date,
+                 expired_date
                  ):
-        self.denomination = denomination
+        self.denomination: float = denomination
         self.description = description
-        self.status = status
-        self.start_date = start_date
-        self.expired_date = expired_date
+        self.status: str = status
+        self.start_date: date = start_date
+        self.expired_date: date = expired_date

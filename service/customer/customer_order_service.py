@@ -5,7 +5,6 @@
     @description: order logic of customer
 """
 from datetime import date
-from decimal import Decimal
 
 from dao.customer_dao.customer_car_dao import customer_get_car_by_id
 from dao.customer_dao.customer_order_dao import customer_car_date_available, customer_order_car, get_customer_orders
@@ -92,6 +91,7 @@ def customer_order_car_service(order_dto: OrderDto) -> bool:
         if order_dto.coupon_id:
             update_coupon_status_service(order_dto.coupon_id, CouponStatus.USED.value)
             return True
+        return True
     else:
         return False
 
@@ -105,7 +105,7 @@ def get_customer_orders_service(customer_id: str) -> list[Order]:
     return get_customer_orders(customer_id)
 
 
-def calculate_final_cost_service(order_dto: OrderDto) -> Decimal:
+def calculate_final_cost_service(order_dto: OrderDto) -> float:
     """
     :description: Service to calculate the final cost of a customer
     :param order_dto: Data Transfer Object with ordering information
@@ -114,20 +114,19 @@ def calculate_final_cost_service(order_dto: OrderDto) -> Decimal:
     # get rental days
     total_rental_days = (
             (order_dto.rental_end_date - order_dto.rental_start_date).days + 1)
-    # print(f"++++++++++++{total_rental_days}")
     # get car object
     car = customer_get_car_by_id_service(order_dto.car_id)
     # get unit_price
-    car_unit_price = Decimal(car.unit_price)
+    car_unit_price = car.unit_price
     # calculate base cost
-    base_cost = Decimal(car_unit_price * total_rental_days)
+    base_cost = car_unit_price * total_rental_days
     # verify and get coupon object
     coupon = verify_coupon_service(order_dto.coupon_id)
     if coupon:
         # calculate total cost with coupon denomination
         total_cost = base_cost - coupon.denomination
         # Ensure that total cost is not negative
-        total_cost = max(Decimal(0), total_cost)
+        total_cost = max(float(0), total_cost)
         return total_cost
     else:
         return base_cost

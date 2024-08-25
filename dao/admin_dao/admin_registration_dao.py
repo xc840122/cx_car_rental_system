@@ -20,7 +20,7 @@ def add_admin(admin: Admin):
         cursor = connection.cursor()
         # insert into database
         sql = ('insert into admins (user_id, user_name, '
-               'password,branch_code) values (%s,%s,%s,%s)')
+               'password,branch_code) values (?,?,?,?)')
         value = (admin.user_id, admin.user_name, admin.password, admin.branch_code)
         cursor.execute(sql, value)
         return True

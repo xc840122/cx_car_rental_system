@@ -6,11 +6,8 @@
 """
 from prettytable import PrettyTable
 
-from dto import coupon_dto
-from enum_entity.coupon_status import CouponStatus
 from enum_entity.message import Message
-from service.admin.admin_coupon_service import reset_coupons_status
-from service.admin.admin_order_service import get_order_list_service, approve_order_service, admin_get_order_by_id
+from service.admin.admin_order_service import get_order_list_service, approve_order_service
 
 
 def get_order_list_controller():

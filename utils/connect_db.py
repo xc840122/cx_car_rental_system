@@ -4,34 +4,18 @@
     @file: connect_db.py
     @description: encapsulate methods to connect db
 """
-import mysql.connector
-
-from constant.db_config import SETUP_DATABASE_CONFIG, CREATE_DATABASE_CONFIG
-
-
-def create_database_connection():
-    """
-    :description: used to create database
-    :return:
-    """
-    try:
-        connection = mysql.connector.connect(**CREATE_DATABASE_CONFIG)
-        if connection.is_connected():
-            # print('Connected to MySQL...')
-            return connection
-    except mysql.connector.Error as err:
-        print(err)
+import sqlite3
 
 
 def get_connection():
     """
-    :description: used to connect db
-    :return:
+    :description: used to connect to the database
+    :return: SQLite3 connection object or None if connection fails
     """
     try:
-        connection = mysql.connector.connect(**SETUP_DATABASE_CONFIG)
-        if connection.is_connected():
-            # print('Connected to MySQL...')
+        connection = sqlite3.connect("cx_car_rental.db")
+        if connection:
             return connection
-    except mysql.connector.Error as err:
-        print(err)
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+        return None

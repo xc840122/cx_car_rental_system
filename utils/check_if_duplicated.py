@@ -12,7 +12,7 @@ def check_if_duplicated(table, field, value):
     connection = get_connection()
     cursor = connection.cursor()
     # select from database as value
-    sql = f'select * from {table} where {field} = %s;'
+    sql = f'select * from {table} where {field} = ?;'
     values = (value,)
     cursor.execute(sql, values)
     result = cursor.fetchall()

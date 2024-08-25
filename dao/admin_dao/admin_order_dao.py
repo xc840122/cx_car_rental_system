@@ -32,6 +32,7 @@ def get_order_list() -> list[Order]:
                status,
                created_at
                FROM car_rental_orders
+               WHERE status like 'PENDING'
                """
         cursor.execute(sql)
         rows = cursor.fetchall()
@@ -60,10 +61,10 @@ def approve_order_dao(order_id: str, audit_result: bool) -> bool:
     try:
         # Update the status of the order to 'APPROVED'
         if audit_result:
-            sql = 'UPDATE car_rental_orders SET status = %s WHERE order_id like %s'
+            sql = 'UPDATE car_rental_orders SET status = ? WHERE order_id like ?'
             cursor.execute(sql, ('APPROVED', order_id))
         else:
-            sql = 'UPDATE car_rental_orders SET status = %s WHERE order_id like %s'
+            sql = 'UPDATE car_rental_orders SET status = ? WHERE order_id like ?'
             cursor.execute(sql, ('REJECTED', order_id))
 
         # Check if the update was successful
@@ -97,7 +98,7 @@ def get_order_by_id(order_id: str) -> Union[Order, bool]:
                    status,
                    created_at
                    FROM car_rental_orders
-                   WHERE order_id = %s
+                   WHERE order_id = ?
                    """
         values = (order_id,)
         cursor.execute(sql, values)
@@ -127,7 +128,7 @@ def get_order_by_car(car_id) -> bool:
         sql = """
                 SELECT order_id
                        FROM car_rental_orders
-                       WHERE car_id = %s 
+                       WHERE car_id = ? 
                        and status = 'PENDING' or 'APPROVED'
                        """
         values = (car_id,)

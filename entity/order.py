@@ -5,7 +5,6 @@
     @description: order entity
 """
 from datetime import datetime, date
-from decimal import Decimal
 
 from enum_entity.order_status import OrderStatus
 
@@ -18,7 +17,7 @@ class Order:
                  coupon_id,
                  rent_start_date: date,
                  rent_end_date: date,
-                 total_cost: Decimal,
+                 total_cost: float,
                  status: OrderStatus = OrderStatus.PENDING.value,
                  created_at: str = None):
         """
@@ -38,7 +37,7 @@ class Order:
         self.coupon_id = coupon_id
         self.rent_start_date = rent_start_date
         self.rent_end_date = rent_end_date
-        self.total_cost = Decimal(total_cost)
+        self.total_cost = total_cost
         self.__status = status
         self.created_at = created_at or datetime.now()
 

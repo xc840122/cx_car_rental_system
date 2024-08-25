@@ -4,9 +4,9 @@
     @file: customer_order_dao.py
     @description: methods to operate customer order in database
 """
+import sqlite3
 from datetime import date
 
-from dto.order_dto import OrderDto
 from entity.order import Order
 from utils.connect_db import get_connection
 from utils.release_db import commit_and_close_connection
@@ -28,12 +28,12 @@ def customer_car_date_available(car_id: int, start_date: date, end_date: date) -
         sql = """
         SELECT COUNT(*)
         FROM car_rental_orders
-        WHERE car_id = %s
+        WHERE car_id = ?
         AND status IN ('APPROVED', 'PENDING') -- Only check for active or upcoming rentals
         AND (
-            (rent_start_date <= %s AND rent_end_date >= %s) -- New start date falls within an existing rental
-        OR (rent_start_date <= %s AND rent_end_date >= %s) -- New end date falls within an existing rental
-        OR (rent_start_date >= %s AND rent_end_date <= %s) -- Existing rental falls completely within the new rental period
+            (rent_start_date <= ? AND rent_end_date >= ?) -- New start date falls within an existing rental
+        OR (rent_start_date <= ? AND rent_end_date >= ?) -- New end date falls within an existing rental
+        OR (rent_start_date >= ? AND rent_end_date <= ?) -- Existing rental falls completely within the new rental period
         )
         """
         cursor.execute(sql, (car_id,start_date,start_date,end_date, end_date, start_date,end_date))
@@ -65,12 +65,12 @@ def customer_order_car(order: Order):
                'rent_start_date, '
                'rent_end_date,'
                'total_cost) '
-               'VALUES (%s, %s, %s, %s, %s, %s,%s)')
+               'VALUES (?, ?, ?, ?, ?, ?,?)')
         values = (order.order_id, order.customer_id, order.car_id, order.coupon_id, order.rent_start_date,
-                  order.rent_end_date, order.total_cost)
+                  order.rent_end_date, float(order.total_cost))
         cursor.execute(sql, values)
         return True
-    except Exception as e:
+    except sqlite3.Error as e:
         print(f"Error booking car: {e}")
         return False
     finally:
@@ -97,7 +97,7 @@ def get_customer_orders(customer_id: str) -> list[Order]:
         status, 
         created_at
         FROM car_rental_orders
-        WHERE customer_id = %s
+        WHERE customer_id = ?
         '''
         # get all orders of the customer
         cursor.execute(sql, (customer_id,))

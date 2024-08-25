@@ -20,7 +20,7 @@ def add_customer(customer: Customer):
         cursor = connection.cursor()
         # insert data into database
         sql = ('insert into customers (user_id, user_name, password, '
-               'name, license_no, phone) values (%s,%s,%s,%s,%s,%s)')
+               'name, license_no, phone) values (?,?,?,?,?,?)')
         value = (
             customer.user_id, customer.user_name, customer.password,
             customer.name, customer.license_no, customer.phone)
