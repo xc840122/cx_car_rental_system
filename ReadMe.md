@@ -1,7 +1,5 @@
-# CX Car Rental System
-
+# **CX Car Rental System**
 The **CX Car Rental System** is a Python-based CUI (command user interface) application designed to simplify car rental operations for both customers and administrators. This system allows customers to easily book cars, apply discount coupons, and manage their rental orders. For administrators, it offers functionalities for managing car inventories, coupons and orders.
-
 ## **Features**
 
 - **Registration and Login**: Secure login and registration for customers and admins.
@@ -12,12 +10,44 @@ The **CX Car Rental System** is a Python-based CUI (command user interface) appl
 - **Order Conflict detect: **System detects order date and status for customer rental.
 - **Coupon Management**: The system supports the creation and application of discount coupons
 - **Automated Return Coupon**: Reset coupon status once related order is rejected
-
 # Getting Started
-## Running the Application
+## Running Project
+To start the Car Rental System, follow these steps:
+
+1. **Copy the code:**
+   1. **Copy from zip file**: **You can decompress "CX Car Rental_source code.zip", copy all files into your local python project, or you can clone if from github which is described below.
+   2. **Clone the Repository**: clone the repository to your local machine using the following command:
+```
+git clone https://github.com/xc840122/cx_car_rental_system.git
+cd car-rental-system
+```
+
+2. **Set Up the Virtual Environment**: It’s recommended to use a virtual environment to manage dependencies. You can create and activate a virtual environment with the following commands:
+```
+python -m venv .venv
+# On Windows
+.\.venv\Scripts\activate
+# On macOS and Linux
+source .venv/bin/activate
+```
+
+3. **Install Dependencies**: Install the required Python packages by running:
+```
+pip install -r requirements.txt
+```
+
+4. **Run the Application**: Start the application by running the main script:
+```
+python main.py
+```
+This command will launch the Car Rental System, and you can interact with it through the command-line interface.
+
+5. **Access the System**: Follow the prompts in the command line to navigate through the different menus and functionalities of the Car Rental System.
+6. **Shut Down the Application**: To safely exit the system, follow the exit options provided in the menu or close the terminal window.
+## Running the Builded Application
 To start the Car Rental System:
 
-1. unzip cx_car_rental_app.zip file.
+1. unzip cx_car_rental_app for mac.zip/cx_car_rental_app for windows.zip file.
 2. find file "main" in folder "main".
 3. double click file "main" to start app.
 4. Follow the On-Screen Instructions.
@@ -29,7 +59,6 @@ sign up as admin or customer, then login to get related sub-menu.
 login in as admin, system presents admin menu.
 ### customer menu
 login in as customer, system presents customer menu.
-
 # Project Structure
 ## File Tree
 The project is organized into several directories and files, each serving a specific purpose:
@@ -277,10 +306,10 @@ The project is organized into several directories and files, each serving a spec
 - **release_db.py**: Utility script for releasing or closing database connections.
 ## **Known Issues**
 
-- **Password: **No secure solution to handle password.
-- **Registration: **Basic validation rules are applied for user_name and password, no validation machenism for other fields like license no, phone or branch code etc.
+- **Password**: **No secure solution to handle password.
+- **Registration**: **Basic validation rules are applied for user_name and password, no validation machenism for other fields like license no, phone or branch code etc.
 - **Delete car**: System doesn't validate related orders while admin deletes a car.
-- **Book rental: **System doesn't apply locker mechanism for booking, it may cause issues while large number of customers use system simultaneously.
+- **Book rental**: **System doesn't apply locker mechanism for booking, it may cause issues while large number of customers use system simultaneously.
 
 We are actively working on resolving these issues and welcome contributions and feedback from the community.
 ## **Contributing**
@@ -288,9 +317,9 @@ We welcome contributions to enhance the **CX Car Rental System**. Please fork th
 ## **License**
 Distributed under the MIT License. See LICENSE.txt for more information.
 ## **Credits**
-**Developer**: Peter (Chi Xu) 
-**Role**: Lead Software Developer
-**Contributions:** Overall design, development, and maintenance of the project, including design the system architecture, develop core functionalities and integrate the user interface with the backend.
+- **Developer**: Peter (Chi Xu) 
+- **Role**: Lead Software Developer
+- **Contributions:** Overall design, development, and maintenance of the project, including design the system architecture, develop core functionalities and integrate the user interface with the backend.
 ## Contact
-**Email**: xuchi007@hotmail.com
-**Project Link**: [https://github.com/xc840122/cx_car_rental_system](https://github.com/xc840122/cx_car_rental_system/tree/main)
+- **Email**: xuchi007@hotmail.com
+- **Project Link**: [https://github.com/xc840122/cx_car_rental_system](https://github.com/xc840122/cx_car_rental_system/tree/main)
