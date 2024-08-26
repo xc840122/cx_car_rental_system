@@ -40,9 +40,15 @@ def customer_order_car_controller():
     # validate the duration
     if not validate_rental_duration(ordered_car, start_date, end_date):
         return
-    # get information, generate order_dto
-    coupon, coupon_denomination = handle_coupon_application()
+    # if use coupon, return validated coupon
+    coupon_denomination = 0.0
+    coupon = handle_coupon_application()
+    if coupon:
+        coupon_denomination = coupon.denomination
+
+    # get customer_id from cached data
     customer_id = current_login_customer()
+    # generate order_dto
     order_dto = OrderDto(customer_id, car_id, coupon.coupon_id if coupon else None, start_date, end_date)
     # calculate cost
     total_cost = calculate_total_cost(order_dto, coupon_denomination)
@@ -153,8 +159,7 @@ def validate_rental_duration(ordered_car, start_date, end_date):
 
 def handle_coupon_application():
     """Handle the coupon application process and return the coupon and its denomination."""
-    coupon_denomination = 0.0
-
+    # check use coupon
     use_coupon = input("Do you want to use a coupon(no cash return "
                        "if denomination is more than order amount? (yes/no): ").strip().lower()
     if use_coupon == 'yes':
@@ -162,8 +167,9 @@ def handle_coupon_application():
         # verify coupon
         coupon = verify_coupon_service(coupon_id)
     else:
-        return
+        return False
 
+    # validate coupon if use
     if coupon:
         if (coupon.status == CouponStatus.ACTIVATED.value and
                 coupon.start_date <= datetime.now().date() <= coupon.expired_date):
@@ -172,7 +178,7 @@ def handle_coupon_application():
         else:
             print(Message.INVALID_COUPON_STATUS.value if coupon else Message.INVALID_COUPON_ID.value)
             coupon = None
-    return coupon, coupon_denomination
+    return coupon
 
 
 def calculate_total_cost(order_dto, coupon_denomination):
