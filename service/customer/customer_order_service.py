@@ -87,7 +87,9 @@ def customer_order_car_service(order_dto: OrderDto) -> bool:
 
     # result
     result = customer_order_car(order)
+    # order create successful
     if result:
+        # if coupon included
         if order_dto.coupon_id:
             update_coupon_status_service(order_dto.coupon_id, CouponStatus.USED.value)
             return True

@@ -2,7 +2,7 @@
     @author: Peter
     @date: 16/08/2024
     @file: db_config.py
-    @description: database configuration
+    @description: reserved file, database configuration for mysql
 """
 
 CREATE_DATABASE_CONFIG = {
